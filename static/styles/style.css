@@ -1,0 +1,32 @@
+body {
+    background-color: #2D4531;
+}
+
+ul {
+    list-style-type:none ;
+}
+
+hr {
+    background-color: #FFFFFF
+}
+
+.bg-crb-data {
+    background-color: #45C45A;
+}
+
+.bg-crb-title {
+    background-color: #262626;
+}
+
+.bg-crb-body-dark {
+    background-color: #184520;
+}
+
+.bg-crb-tb-title {
+    color: #FFFFFF
+}
+
+.crb-test {
+    inline-size: 60%;
+    overflow-wrap: break-word;
+}

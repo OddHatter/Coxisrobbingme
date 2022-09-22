@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row bg-dark" align="center">
+        <div class="col-sm-8 text-light">
+            <br>
+            <h6 class="text-left">
+                <div class="col-sm-12 crb-text">
+                This site displays the average amount the my ISP, Cox Communications, overcharges me by not providing the speeds advertised in their gigablast package. 
+                Here is a brief breakdown of what data this site shows and where it comes from:
+                <br>
+                <br>
+                <ul>
+                    <li>A speed test using the "speedtest-cli" linux package is run approximately every 20 minutes, from a device connected directly to the modem.</li>
+                    <br>
+                    <li>A bash script then sends the data to an external database, where a python script then queries the data and uses it to perform the necessary calculations.</li>
+                    <br>
+                    <li>Using the results of those calculatios, the data is represented here in the tables below as well as the chart graphing last 24 hours of speed tests.</li>
+                </ul>
+                <br>
+                The amounts being calculated are based on Cox Communications Gigablast(1Gbps) package with an unlimited data addon. Due to hardware contraints, upload speed data is not currently used in the calculations as it may skew the fairness of the data. This will hopefully be resolved in the near future.
+                <br>
+                <ul>
+                    <li>Full Package Cost: Full cost after taxes and fees.</li><br>
+                    <li>Federally Subsidized Cost (FSD): $30 monthly credit for lower income households under the <a href="https://www.fcc.gov/broadbandbenefit">Emergency Broadband Benefit(EBB)</a></li><br>
+                    <li>FSD and Retention Cost: After calling into billing regarding service outages and slow speeds, an additional $30 monthly discount was applied.</li>
+                </ul>
+                For more in depth details on this project, please visit the <a href="/about">About page.</a>
+                </div>
+            </h6>
+        </div>
+        <div class="col-sm-4 bg-crb-data text-center">
+            <div class="row bg-crb-body-dark text-white"><div class="col-sm"><h4>Package Costs<h4></div></div>
+            <div class="row text-white bg-success"><div class="col-sm"><h3>Full<h3></div></div><br>
+            <div class="row text-white"><div class="col-sm"><h2>$170 Per Month<h2></div></div>
+            <br>
+            <div class="row text-white bg-success"><div class="col-sm"><h3>Federally Subsidized<h3></div></div><br>
+            <div class="row text-white"><div class="col-sm"><h2>$140 Per Month<h2></div></div>
+            <br>
+            <div class="row text-white bg-success"><div class="col-sm"><h3>FSD & Retention Credit<h3></div></div><br>
+            <div class="row text-white"><div class="col-sm"><h2>$110 Per Month<h2></div></div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container-fluid">
+    <div class="row bg-crb-title text-light">
+        <div class="col-sm-12">
+            <h3 align="center">Average Amount Cox is "Stealing"</h3>
+        </div>
+    </div>
+    <div class="row text-light">
+        <div class="col-sm-12 bg-success" align="center">
+            <h4>Last Refresh: {{ lastUpdate }} EST</h4>
+        </div>
+    </div>
+    <div class="row bg-dark">
+        <div class="col-sm-4  bg-crb-data" align="center">
+            <div class="row bg-crb-tb-title">
+                <div class="col-sm" >
+                    <h4 align="center">Per Second</h4>
+                </div>
+            </div>
+        <table class="table col-sm-4 text-white">
+            <thead>
+                <tr>
+                    <th scope="col"><h5 align="left">Package Type</h5></th>
+                    <th scope="col"><h5 align="right">Cost</h5></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="col"><h5 align="left">Full</h5></th>
+                    <td><h5 align="right">${{ flcps }}</h5></td>
+
+                </tr>
+                <tr>
+                    <th scope="col"><h5 align="left">FSD</h5></th>
+                    <td><h5 align="right">${{ fcps }}</h5></td>
+                </tr>
+                <tr>
+                    <th scope="row"><h5 align="left">FSD and Retention</h5></th>
+                    <td><h5 align="right">${{ acps }}</h></td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    <!-- </div> -->
+
+    <!-- <div class="row bg-info"> -->
+        <div class="col-sm-4  bg-crb-data" align="center">
+            <div class="row bg-crb-tb-title">
+                <div class="col-sm">
+                    <h4 align="center">Per Minute</h4>
+                </div>
+            </div>
+            <table class="table col-sm-4 text-white">
+                <thead>
+                    <tr>
+                        <th scope="col"><h5 align="left">Package Type</h5></th>
+                        <th scope="col"><h5 align="right">Cost</h5></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="col"><h5 align="left">Full</h5></th>
+                        <td><h5 align="right">${{ flcpm }}</h5></td>
+
+                    </tr>
+                    <tr>
+                        <th scope="col"><h5 align="left">FSD</h5></th>
+                        <td><h5 align="right">${{ fcpm }}</h5></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><h5 align="left">FSD and Retention</h5></th>
+                        <td><h5 align="right">${{ acpm }}</h></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    <!-- </div> -->
+
+    <!-- <div class="row bg-info"> -->
+        <div class="col-sm-4 bg-crb-data" align="center">
+            <div class="row bg-crb-tb-title">
+                <div class="col-sm">
+                    <h4 align="center">Per Hour</h4>
+                </div>
+            </div>
+            <table class="table col-sm-4 text-white">
+                <thead>
+                    <tr>
+                        <th scope="col"><h5 align="left">Package Type</h5></th>
+                        <th scope="col"><h5 align="right">Cost</h5></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="col"><h5 align="left">Full</h5></th>
+                        <td><h5 align="right">${{ flcph }}</h5></td>
+
+                    </tr>
+                    <tr>
+                        <th scope="col"><h5 align="left">FSD</h5></th>
+                        <td><h5 align="right">${{ fcph }}</h5></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><h5 align="left">FSD and Retention</h5></th>
+                        <td><h5 align="right">${{ acph }}</h></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row bg-crb-data">
+        <div class="col-sm-4 bg-crb-data" align="center">
+            <div class="row bg-crb-tb-title">
+                <div class="col-sm">
+                    <h4 align="center">Per Day</h4>
+                </div>
+            </div>
+        <table class="table col-sm-4 text-white">
+            <thead>
+                <tr>
+                    <th scope="col"><h5 align="left">Package Type</h5></th>
+                    <th scope="col"><h5 align="right">Cost</h5></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="col"><h5 align="left">Full</h5></th>
+                    <td><h5 align="right">${{ flcpd }}</h5></td>
+                </tr>
+                <tr>
+                    <th scope="col"><h5 align="left">FSD</h5></th>
+                    <td><h5 align="right">${{ fcpd }}</h5></td>
+                </tr>
+                <tr>
+                    <th scope="row"><h5 align="left">FSD and Retention</h5></th>
+                    <td><h5 align="right">${{ acpd }}</h></td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    <!-- </div> -->
+
+    <!-- <div class="row bg-info"> -->
+        <div class="col-sm-4 bg-crb-data" align="center">
+            <div class="row bg-crb-tb-title">
+                <div class="col-sm">
+                    <h4 align="center">Per Week</h4>
+                </div>
+            </div>
+        <table class="table col-sm-4 text-white">
+            <thead>
+                <tr>
+                    <th scope="col"><h5 align="left">Package Type</h5></th>
+                    <th scope="col"><h5 align="right">Cost</h5></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="col"><h5 align="left">Full</h5></th>
+                    <td><h5 align="right">${{ flcpw }}</h5></td>
+
+                </tr>
+                <tr>
+                    <th scope="col"><h5 align="left">FSD</h5></th>
+                    <td><h5 align="right">${{ fcpw }}</h5></td>
+                </tr>
+                <tr>
+                    <th scope="row"><h5 align="left">FSD and Retention</h5></th>
+                    <td><h5 align="right">${{ acpw }}</h></td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    <!-- </div> -->
+
+    <!-- <div class="row bg-info"> -->
+        <div class="col-sm-4 bg-crb-data" align="center">
+            <div class="row bg-crb-tb-title">
+                <div class="col-sm">
+                    <h4 align="center">Per Month</h4>
+                </div>
+            </div>
+        <table class="table col-sm-4 text-white">
+            <thead>
+                <tr>
+                    <th scope="col"><h5 align="left">Package Type</h5></th>
+                    <th scope="col"><h5 align="right">Cost</h5></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="col"><h5 align="left">Full</h5></th>
+                    <td><h5 align="right">${{ flcpmth }}</h5></td>
+                </tr>
+                <tr>
+                    <th scope="col"><h5 align="left">FSD</h5></th>
+                    <td><h5 align="right">${{ fcpmth }}</h5></td>
+                </tr>
+                <tr>
+                    <th scope="row"><h5 align="left">FSD and Retention</h5></th>
+                    <td><h5 align="right">${{ acpmth }}</h></td>
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+    <div class="row bg-dark">
+        <div class="col-sm-12  bg-crb-data" align="center">
+            <div class="row bg-crb-tb-title">
+                <div class="col-sm-12">
+                    <h4 align="center">Per Year</h4>
+                </div>
+            </div>
+            <table class="table col-sm-10 text-white" align="center">
+                <thead>
+                    <tr>
+                        <th scope="col"><h5 align="left">Package Type</h5></th>
+                        <th scope="col"><h5 align="right">Cost</h5></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="col"><h5 align="left">Full</h5></th>
+                        <td><h5 align="right">${{ flcpy }}</h5></td>
+                    </tr>
+                    <tr>
+                        <th scope="col"><h5 align="left">FSD</h5></th>
+                        <td><h5 align="right">${{ fcpy }}</h5></td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><h5 align="left">FSD and Retention</h5></th>
+                        <td><h5 align="right">${{ acpy }}</h></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+    <div class="row bg-dark">
+        <div class="col-sm-12 bg-crb-title" align="center">
+            <h2 class="text-white" align="center">Last 24hrs Speeds</h2>
+        </div>
+    </div>
+    <div class="row bg-dark">
+        <div class="col-sm-12" align="center">
+            <img src="/static/speeds.png" class="img-fluid" style="max-width:100%;" align="center">
+        </div>
+    </div>
+</div>
+{% endblock %}

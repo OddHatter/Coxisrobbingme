@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid ">
+    <div class="row bg-primary text-light" align="center">
+        <div class="col-sm-12 bg-crb-title">
+            <h1 align="center">About This Project</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 bg-dark text-white" align="center">
+            <br>
+            <h4 align="left">
+                Once I have finished commenting the code, I will provide a link to the github page where I will be uploading the source code.<br><br>
+                To give a few details regarding this project, the device being used to test speeds is a Jetson
+                Nano 2GB with a 1Gbps ethernet port, that is connected directly to the modem using a cat 6 cable.<br><br>
+                The nano runs a script every 20 mintues that uses speedtest-cli to get speedtest data and insert it into a database.<br> 
+                Another script is run on the server every 10 minutes, to query the database for download speeds, and calculate the average difference in package speed:actual speed,<br> 
+                and use that data to calculate that difference in terms of how much I pay vs what service I get.<br><br> 
+                This is a work in progress and will continue to improve my code and hardware to factor in upload speed as well. 
+            </h4>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+#!/bin/bash 
+
+# You must install speedtest-cli prior to running this script
+
+spd_str=$(speedtest --json) # Run speedtest and store data in a string
+dwnstr=$(echo $spd_str | awk {'print $1;'} | awk -F '"' {'print $2;'}) # Get the first word of string to ensure speedtest ran
+if [ "$dwnstr" != "download" ]; then # Check if speetest-cli comes back with error 
+  echo $spd_str >> /var/log/speed_test/speed_test.log # Output error data to log
+  sleep 120 # Wait for 2 minutes
+  spd_str=$(speedtest --json) # Run speedtest and store data in a string again
+  dwnstr=$(echo $spd_str | awk {'print $1;'} | awk -F '"' {'print $2;'}) # Get the first word of string to ensure speedtest ran
+else
+  # Store data into variables for output to database
+  Upload=$(echo $spd_str | jq '.upload')
+  Download=$(echo $spd_str | jq '.download')
+  Ping=$(echo $spd_str | jq '.ping')
+  Timestamp=$(echo $spd_str | jq '.timestamp')
+  Host=$(echo $spd_str | jq '.server' | jq '.host')
+  Server_Name=$(echo $spd_str | jq '.server' | jq '.name')
+  # Save data to database
+  mysql -D {DB_NAME} -e "INSERT INTO {TABLE_NAME} (Server_Name, Timestamp, Host, Ping, Download, Upload) Values ('$Server_Name', '$Timestamp', '$Host', '$Ping', '$Download', '$Upload')"
+  fi
+
